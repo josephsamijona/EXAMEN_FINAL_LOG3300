@@ -1,5 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
 from livres.models import Livres
+from django.http import JsonResponse
 from .forms import LivreForm
 
 
@@ -8,6 +10,17 @@ from .forms import LivreForm
 def home(request):
    livres = Livres.objects.all()
    return render(request, 'index.html', {'livres': livres})
+
+
+def voir_livre(request, livre_id):
+    livre = get_object_or_404(Livres, pk=livre_id)
+    data = {
+        'titre': livre.titre,
+        'auteur': livre.auteur,
+        'date_publication': livre.date_publication.strftime('%Y-%m-%d') if livre.date_publication else '',
+        'genre': livre.genre
+    }
+    return JsonResponse(data)
 
 def livre(request ):
     # Logique pour récupérer les détails d'un livre spécifique en fonction de son ID

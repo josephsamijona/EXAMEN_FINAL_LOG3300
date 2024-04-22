@@ -64,20 +64,22 @@
 </div>
 
 <!-- Script JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
   // Fonction pour afficher les détails d'un livre dans une modale
   function voirDetails(id) {
-    // Implémentez la logique pour charger les détails du livre depuis la base de données ici
-    // Pour l'instant, nous allons utiliser des données fictives pour les démonstrations
-    var livre = { id: id, titre: "Titre " + id, auteur: "Auteur " + id, date_publication: "2022-01-0" + id, genre: "Genre " + id };
-
-    var details = "<p><strong>Titre:</strong> " + livre.titre + "</p>";
-    details += "<p><strong>Auteur:</strong> " + livre.auteur + "</p>";
-    details += "<p><strong>Date de Publication:</strong> " + livre.date_publication + "</p>";
-    details += "<p><strong>Genre:</strong> " + livre.genre + "</p>";
-
-    $("#detailsBody").html(details);
-    $("#detailsModal").modal("show");
+    $.ajax({
+      url: "{% url 'voir_livre' 0 %}".replace('0', id),
+      success: function(data) {
+        var details = "<p><strong>Titre:</strong> " + data.titre + "</p>";
+        details += "<p><strong>Auteur:</strong> " + data.auteur + "</p>";
+        details += "<p><strong>Date de Publication:</strong> " + data.date_publication + "</p>";
+        details += "<p><strong>Genre:</strong> " + data.genre + "</p>";
+        $("#detailsBody").html(details);
+        $("#detailsModal").modal("show");
+      }
+    });
   }
 
   // Fonction pour modifier un livre
@@ -95,4 +97,3 @@
 
 </body>
 </html>
-
