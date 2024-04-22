@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page d'accueil - Liste des Livres</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    /* Ajoutez vos styles CSS personnalisés ici */
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1>Liste des Livres</h1>
+  <a href="ajouter.html" class="btn btn-success mb-3">Ajouter un Livre</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Date de Publication</th>
+        <th>Genre</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="livresTable">
+      <!-- La liste des livres sera ajoutée ici dynamiquement -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal pour afficher les détails du livre -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detailsModalLabel">Détails du Livre</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="detailsBody">
+        <!-- Les détails du livre seront ajoutés ici dynamiquement -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script JavaScript -->
+<script>
+  // Fonction pour charger les livres depuis la base de données et les afficher dans la table
+  function chargerLivres() {
+    // Vous devez implémenter la logique pour charger les livres depuis la base de données ici
+    // Pour l'instant, nous allons utiliser des données fictives pour les démonstrations
+    var livres = [
+      { id: 1, titre: "Titre 1", auteur: "Auteur 1", date_publication: "2022-01-01", genre: "Genre 1" },
+      { id: 2, titre: "Titre 2", auteur: "Auteur 2", date_publication: "2022-02-01", genre: "Genre 2" },
+      { id: 3, titre: "Titre 3", auteur: "Auteur 3", date_publication: "2022-03-01", genre: "Genre 3" }
+    ];
+
+    // Effacer le contenu de la table
+    $("#livresTable").empty();
+
+    // Boucler à travers la liste des livres et les ajouter à la table
+    livres.forEach(function(livre) {
+      var row = "<tr>";
+      row += "<td>" + livre.titre + "</td>";
+      row += "<td>" + livre.auteur + "</td>";
+      row += "<td>" + livre.date_publication + "</td>";
+      row += "<td>" + livre.genre + "</td>";
+      row += "<td><button type='button' class='btn btn-primary btn-sm' onclick='voirDetails(" + livre.id + ")'>Voir</button> ";
+      row += "<button type='button' class='btn btn-warning btn-sm' onclick='modifierLivre(" + livre.id + ")'>Modifier</button> ";
+      row += "<button type='button' class='btn btn-danger btn-sm' onclick='supprimerLivre(" + livre.id + ")'>Supprimer</button></td>";
+      row += "</tr>";
+      $("#livresTable").append(row);
+    });
+  }
+
+  // Fonction pour afficher les détails d'un livre dans une modale
+  function voirDetails(id) {
+    // Vous devez implémenter la logique pour charger les détails du livre depuis la base de données ici
+    // Pour l'instant, nous allons utiliser des données fictives pour les démonstrations
+    var livre = { id: id, titre: "Titre " + id, auteur: "Auteur " + id, date_publication: "2022-01-0" + id, genre: "Genre " + id };
+
+    var details = "<p><strong>Titre:</strong> " + livre.titre + "</p>";
+    details += "<p><strong>Auteur:</strong> " + livre.auteur + "</p>";
+    details += "<p><strong>Date de Publication:</strong> " + livre.date_publication + "</p>";
+    details += "<p><strong>Genre:</strong> " + livre.genre + "</p>";
+
+    $("#detailsBody").html(details);
+    $("#detailsModal").modal("show");
+  }
+
+  // Fonction pour modifier un livre
+  function modifierLivre(id) {
+    // Implémentez la logique pour modifier un livre ici
+    console.log("Modifier le livre avec l'ID:", id);
+  }
+
+  // Fonction pour supprimer un livre
+  function supprimerLivre(id) {
+    // Implémentez la logique pour supprimer un livre ici
+    console.log("Supprimer le livre avec l'ID:", id);
+  }
+
+  // Charger les livres lors du chargement initial de la page
+  $(document).ready(function() {
+    chargerLivres();
+  });
+</script>
+
+</body>
+</html>

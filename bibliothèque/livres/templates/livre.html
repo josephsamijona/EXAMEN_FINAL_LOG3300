@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voir Livre</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1>Informations du Livre</h1>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title" id="titre"></h5>
+          <p class="card-text"><strong>Titre:</strong> <span id="titre"></span></p>
+          <p class="card-text"><strong>Auteur:</strong> <span id="auteur"></span></p>
+          <p class="card-text"><strong>Date de Publication:</strong> <span id="date_publication"></span></p>
+          <p class="card-text"><strong>Genre:</strong> <span id="genre"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  // Récupérer les informations du livre depuis l'URL
+  var params = new URLSearchParams(window.location.search);
+  var titre = params.get('titre');
+  var auteur = params.get('auteur');
+  var date_publication = params.get('date_publication');
+  var genre = params.get('genre');
+
+  // Afficher les informations du livre dans les éléments HTML
+  document.getElementById('titre').textContent = titre;
+  document.getElementById('auteur').textContent = auteur;
+  document.getElementById('date_publication').textContent = date_publication;
+  document.getElementById('genre').textContent = genre;
+</script>
+</body>
+</html>
