@@ -77,7 +77,7 @@ WSGI_APPLICATION = "bibliothèque.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME":  'examenfinal',
+        "NAME":  'examenlivre',
         "USER": 'safira',
         "PASSWORD": 'monnaie1',
         "HOST": 'localhost',
