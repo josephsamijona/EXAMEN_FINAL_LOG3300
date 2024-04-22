@@ -1,3 +1,5 @@
+{% load static %} <!-- Charger les fichiers statiques comme les fichiers CSS -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +8,15 @@
   <title>Page d'accueil - Liste des Livres</title>
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <style>
-    /* Ajoutez vos styles CSS personnalisés ici */
-  </style>
+  <!-- Utilisation des fichiers CSS statiques -->
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
 
 <div class="container mt-5">
   <h1>Liste des Livres</h1>
-  <a href="ajouter.html" class="btn btn-success mb-3">Ajouter un Livre</a>
+  <a href="{% url 'ajout_livre' %}" class="btn btn-success mb-3">Ajouter un Livre</a>
+
   <table class="table table-striped">
     <thead>
       <tr>
@@ -30,7 +28,20 @@
       </tr>
     </thead>
     <tbody id="livresTable">
-      <!-- La liste des livres sera ajoutée ici dynamiquement -->
+      <!-- Utilisation de la syntaxe Django pour boucler à travers les livres -->
+      {% for livre in livres %}
+      <tr>
+        <td>{{ livre.titre }}</td>
+        <td>{{ livre.auteur }}</td>
+        <td>{{ livre.date_publication }}</td>
+        <td>{{ livre.genre }}</td>
+        <td>
+          <button type="button" class="btn btn-primary btn-sm" onclick="voirDetails({{ livre.id }})">Voir</button>
+          <button type="button" class="btn btn-warning btn-sm" onclick="modifierLivre({{ livre.id }})">Modifier</button>
+          <button type="button" class="btn btn-danger btn-sm" onclick="supprimerLivre({{ livre.id }})">Supprimer</button>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
@@ -54,37 +65,9 @@
 
 <!-- Script JavaScript -->
 <script>
-  // Fonction pour charger les livres depuis la base de données et les afficher dans la table
-  function chargerLivres() {
-    // Vous devez implémenter la logique pour charger les livres depuis la base de données ici
-    // Pour l'instant, nous allons utiliser des données fictives pour les démonstrations
-    var livres = [
-      { id: 1, titre: "Titre 1", auteur: "Auteur 1", date_publication: "2022-01-01", genre: "Genre 1" },
-      { id: 2, titre: "Titre 2", auteur: "Auteur 2", date_publication: "2022-02-01", genre: "Genre 2" },
-      { id: 3, titre: "Titre 3", auteur: "Auteur 3", date_publication: "2022-03-01", genre: "Genre 3" }
-    ];
-
-    // Effacer le contenu de la table
-    $("#livresTable").empty();
-
-    // Boucler à travers la liste des livres et les ajouter à la table
-    livres.forEach(function(livre) {
-      var row = "<tr>";
-      row += "<td>" + livre.titre + "</td>";
-      row += "<td>" + livre.auteur + "</td>";
-      row += "<td>" + livre.date_publication + "</td>";
-      row += "<td>" + livre.genre + "</td>";
-      row += "<td><button type='button' class='btn btn-primary btn-sm' onclick='voirDetails(" + livre.id + ")'>Voir</button> ";
-      row += "<button type='button' class='btn btn-warning btn-sm' onclick='modifierLivre(" + livre.id + ")'>Modifier</button> ";
-      row += "<button type='button' class='btn btn-danger btn-sm' onclick='supprimerLivre(" + livre.id + ")'>Supprimer</button></td>";
-      row += "</tr>";
-      $("#livresTable").append(row);
-    });
-  }
-
   // Fonction pour afficher les détails d'un livre dans une modale
   function voirDetails(id) {
-    // Vous devez implémenter la logique pour charger les détails du livre depuis la base de données ici
+    // Implémentez la logique pour charger les détails du livre depuis la base de données ici
     // Pour l'instant, nous allons utiliser des données fictives pour les démonstrations
     var livre = { id: id, titre: "Titre " + id, auteur: "Auteur " + id, date_publication: "2022-01-0" + id, genre: "Genre " + id };
 
@@ -108,12 +91,8 @@
     // Implémentez la logique pour supprimer un livre ici
     console.log("Supprimer le livre avec l'ID:", id);
   }
-
-  // Charger les livres lors du chargement initial de la page
-  $(document).ready(function() {
-    chargerLivres();
-  });
 </script>
 
 </body>
 </html>
+

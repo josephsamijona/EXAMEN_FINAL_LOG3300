@@ -1,13 +1,12 @@
 from django.shortcuts import render
-
+from livres.models import Livres
 
 
 # on ajoute les methodes pour les urls afin que le render des pages html puisse se faire 
 # Create your views here.
 def home(request):
-    # Logique pour récupérer la liste de tous les livres disponibles depuis la base de données
-  
-    return render(request, 'index.html' )
+   livres = Livres.objects.all()
+   return render(request, 'index.html', {'livres': livres})
 
 def livre(request ):
     # Logique pour récupérer les détails d'un livre spécifique en fonction de son ID
