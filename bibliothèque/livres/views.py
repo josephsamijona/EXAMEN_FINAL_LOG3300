@@ -43,16 +43,32 @@ def ajout_livre(request):
     return render(request, 'ajoutlivre.html', {'form': form})
 
 def modifier_livre(request, livre_id):
+    # Récupérer le livre à partir de son ID
     livre = get_object_or_404(Livres, pk=livre_id)
-    data = {
-        'titre': livre.titre,
-        'auteur': livre.auteur,
-        'date_publication': livre.date_publication.strftime('%Y-%m-%d') if livre.date_publication else None,
-        'genre': livre.genre,
-    }
-    return JsonResponse(data)
+    
+    if request.method == 'POST':
+        # Si le formulaire est soumis avec des données, traiter les données
+        form = LivreForm(request.POST, instance=livre)
+        if form.is_valid():
+            # Si le formulaire est valide, enregistrer les modifications
+            form.save()
+            return  redirect('home')  # Envoyer une réponse JSON pour indiquer le succès
+    else:
+        # Si c'est une requête GET, pré-remplir le formulaire avec les données du livre
+        form = LivreForm(instance=livre)
+    
+    # Rendre le template avec le formulaire et les données du livre
+    return render(request, 'modifierlivre.html', {'form': form, 'livre': livre})
 
-def supprimer_livre(request):
-    # Logique pour afficher la page de confirmation de suppression d'un livre
-   
-    return render(request, 'supprimer_livre.html', {'livre': livre})
+def supprimer_livre(request, livre_id):
+    # Récupérer le livre à supprimer
+    livre = Livres.objects.get(pk=livre_id)
+
+    if request.method == 'POST':
+        # Supprimer le livre
+        livre.delete()
+        # Renvoyer une réponse JSON pour indiquer que le livre a été supprimé
+        return JsonResponse({'message': 'Le livre a été supprimé avec succès.'})
+
+    # En cas de requête GET ou toute autre, renvoyer une erreur
+    return JsonResponse({'erreur': 'La requête doit être de type POST.'}, status=400)

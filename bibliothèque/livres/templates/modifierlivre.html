@@ -1,3 +1,5 @@
+{% load static %} <!-- Charger les fichiers statiques comme les fichiers CSS -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,23 +15,9 @@
   <h1>Modifier Livre</h1>
   <div class="row">
     <div class="col-md-6 offset-md-3">
-      <form id="modifierForm">
-        <div class="form-group">
-          <label for="titre">Titre</label>
-          <input type="text" class="form-control" id="titre" required>
-        </div>
-        <div class="form-group">
-          <label for="auteur">Auteur</label>
-          <input type="text" class="form-control" id="auteur" required>
-        </div>
-        <div class="form-group">
-          <label for="date_publication">Date de Publication</label>
-          <input type="date" class="form-control" id="date_publication">
-        </div>
-        <div class="form-group">
-          <label for="genre">Genre</label>
-          <input type="text" class="form-control" id="genre">
-        </div>
+      <form id="modifierForm" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Enregistrer</button>
       </form>
     </div>
