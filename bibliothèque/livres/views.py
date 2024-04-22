@@ -42,10 +42,15 @@ def ajout_livre(request):
     # Rendre le template avec le formulaire
     return render(request, 'ajoutlivre.html', {'form': form})
 
-def modifier_livre(request ):
-    # Logique pour afficher le formulaire pour modifier les informations d'un livre existant
- 
-    return render(request, 'modifierlivre.html', {'livre': livre})
+def modifier_livre(request, livre_id):
+    livre = get_object_or_404(Livres, pk=livre_id)
+    data = {
+        'titre': livre.titre,
+        'auteur': livre.auteur,
+        'date_publication': livre.date_publication.strftime('%Y-%m-%d') if livre.date_publication else None,
+        'genre': livre.genre,
+    }
+    return JsonResponse(data)
 
 def supprimer_livre(request):
     # Logique pour afficher la page de confirmation de suppression d'un livre

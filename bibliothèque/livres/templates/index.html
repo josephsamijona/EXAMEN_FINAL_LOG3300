@@ -63,6 +63,52 @@
   </div>
 </div>
 
+<!-- Modal pour modifier les détails du livre -->
+<div class="modal fade" id="modifierModal" tabindex="-1" role="dialog" aria-labelledby="modifierModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modifierModalLabel">Modifier le Livre</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modifierBody">
+
+            <div class="form-group">
+                 
+                <input type="hidden" id="livreId" name="livreId" value="">
+              </div>
+          
+
+          <!-- Les champs de modification du livre seront ajoutés ici -->
+          <div class="form-group">
+            <label for="titreModif">Titre</label>
+            <input type="text" class="form-control" id="titreModif" required>
+          </div>
+          <div class="form-group">
+            <label for="auteurModif">Auteur</label>
+            <input type="text" class="form-control" id="auteurModif" required>
+          </div>
+          <div class="form-group">
+            <label for="date_publicationModif">Date de Publication</label>
+            <input type="date" class="form-control" id="date_publicationModif">
+          </div>
+          <div class="form-group">
+            <label for="genreModif">Genre</label>
+            <input type="text" class="form-control" id="genreModif">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" onclick="enregistrerModification()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
 <!-- Script JavaScript -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -82,17 +128,49 @@
     });
   }
 
-  // Fonction pour modifier un livre
-  function modifierLivre(id) {
-    // Implémentez la logique pour modifier un livre ici
-    console.log("Modifier le livre avec l'ID:", id);
-  }
+// Fonction pour modifier un livre
+// Fonction pour enregistrer les modifications d'un livre
+function enregistrerModification() {
+  // Récupérer l'identifiant du livre à partir du champ caché
+  var id = $("#livreId").val();
+  
+  // Récupérer les valeurs des champs modifiés
+  var titre = $("#titreModif").val();
+  var auteur = $("#auteurModif").val();
+  var date_publication = $("#date_publicationModif").val();
+  var genre = $("#genreModif").val();
+  
+  // Données à envoyer au backend Django
+  var data = {
+    id: id,
+    titre: titre,
+    auteur: auteur,
+    date_publication: date_publication,
+    genre: genre
+  };
 
-  // Fonction pour supprimer un livre
-  function supprimerLivre(id) {
-    // Implémentez la logique pour supprimer un livre ici
-    console.log("Supprimer le livre avec l'ID:", id);
-  }
+  // Envoyer les données modifiées au backend Django via une requête AJAX
+  $.ajax({
+    type: "POST", // Utiliser la méthode POST pour envoyer les données
+    url: "{% url 'modifier_livre' 0 %}".replace('0', id),
+    data: data, // Envoyer les données au backend
+    success: function(response) {
+      // Afficher un message de succès ou effectuer d'autres actions après l'enregistrement
+      console.log("Les modifications ont été enregistrées avec succès !");
+      
+      // Fermer le modal après l'enregistrement
+      $("#modifierModal").modal("hide");
+      
+      // Actualiser la page pour afficher les modifications
+      window.location.reload();
+    },
+    error: function(xhr, status, error) {
+      // Gérer les erreurs en cas d'échec de l'enregistrement
+      console.error("Erreur lors de l'enregistrement des modifications:", error);
+    }
+  });
+}
+
 </script>
 
 </body>
