@@ -90,23 +90,26 @@
     window.location.href = "{% url 'modifier_livre' 0 %}".replace('0', id);
   }
 
-  // Fonction pour supprimer un livre
   function supprimerLivre(id) {
     if (confirm("Êtes-vous sûr de vouloir supprimer ce livre ?")) {
-      $.ajax({
-        url: "{% url 'supprimer_livre' 0 %}".replace('0', id),
-        method: 'POST',
-        success: function(data) {
-          alert(data.message); // Afficher le message de confirmation dans une fenêtre d'alerte
-          // Recharger la page pour mettre à jour la liste des livres
-          location.reload();
-        },
-        error: function(xhr, textStatus, errorThrown) {
-          alert('Erreur lors de la suppression du livre : ' + xhr.responseJSON.erreur);
-        }
-      });
+        $.ajax({
+            url: "{% url 'supprimer_livre' 0 %}".replace('0', id),
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function() {
+                alert("Le livre a été supprimé avec succès.");
+                // Actualiser la page pour refléter les changements
+                location.reload();
+            },
+            error: function(xhr, errmsg, err) {
+                alert("Une erreur s'est produite lors de la suppression du livre.");
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
     }
-  }
+ }
 </script>
 
 

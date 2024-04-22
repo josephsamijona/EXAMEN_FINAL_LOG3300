@@ -62,13 +62,10 @@ def modifier_livre(request, livre_id):
 
 def supprimer_livre(request, livre_id):
     # Récupérer le livre à supprimer
-    livre = Livres.objects.get(pk=livre_id)
+    livre = get_object_or_404(Livres, pk=livre_id)
 
-    if request.method == 'POST':
-        # Supprimer le livre
-        livre.delete()
-        # Renvoyer une réponse JSON pour indiquer que le livre a été supprimé
-        return JsonResponse({'message': 'Le livre a été supprimé avec succès.'})
+    # Supprimer le livre
+    livre.delete()
 
-    # En cas de requête GET ou toute autre, renvoyer une erreur
-    return JsonResponse({'erreur': 'La requête doit être de type POST.'}, status=400)
+    # Redirection vers la page d'accueil ou une autre vue après la suppression
+    return redirect('home') 
