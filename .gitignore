@@ -1,0 +1,22 @@
+# Fichiers d'environnement
+.env
+
+# Fichiers de configuration
+*.pyc
+__pycache__/
+*.pyo
+*.pyc
+*.pyd
+*.sqlite3
+
+# Fichiers de logs
+*.log
+
+# Fichiers de cache
+*.cache
+
+# Fichiers de compilation
+*.pyc
+
+# Répertoire virtuel
+venv/
