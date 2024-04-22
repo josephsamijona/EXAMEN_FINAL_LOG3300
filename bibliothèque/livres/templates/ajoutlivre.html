@@ -38,5 +38,44 @@
 
 <!-- Bootstrap JS -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#ajoutForm').submit(function(event) {
+      // Empêcher le comportement par défaut du formulaire
+      event.preventDefault();
+      
+      // Récupérer les valeurs des champs du formulaire
+      var titre = $('#titre').val();
+      var auteur = $('#auteur').val();
+      var date_publication = $('#date_publication').val();
+      var genre = $('#genre').val();
+
+      // Envoyer les données du formulaire à la vue Django pour les traiter
+      $.ajax({
+        type: 'POST',
+        url: '{% url "ajout_livre" %}',
+        data: {
+          'titre': titre,
+          'auteur': auteur,
+          'date_publication': date_publication,
+          'genre': genre,
+          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function(response) {
+          // Faire quelque chose en cas de succès, par exemple rediriger l'utilisateur vers une autre page
+          window.location.href = '{% url "home" %}';
+        },
+        error: function(response) {
+          // Gérer les erreurs, par exemple afficher un message d'erreur à l'utilisateur
+          console.log('Erreur lors de l\'ajout du livre.');
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
+
